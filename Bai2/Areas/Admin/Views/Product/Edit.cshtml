@@ -1,0 +1,64 @@
+﻿@model Product;
+
+<section>
+    <h4>
+        Chỉnh sửa sản phẩm
+    </h4>
+    <hr />
+    <form asp-action="Update" method="POST" asp-area="Admin" enctype="multipart/form-data">
+        <input hidden asp-for="Id" />
+        <input hidden asp-for="ImageUrl" />
+
+        <div class="row">
+            <div class="col-lg-4">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Alternate Text" />
+                }
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label class="form-label">Tên sản phẩm</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mô tả sản phẩm</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Giá tiền</label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Image Url</label>
+                    <input class="form-control-file" name="fileImage" type="file" />
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Danh mục sản phẩm</label>
+                    <select asp-for="CategoryId" asp-items="@ViewBag.CATEGORIES" class="form-control">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group ">
+            <button class="btn btn-success mr-2">lưu</button>
+            <a asp-action="Index" asp-area="Admin" class="btn btn-secondary">Trở về</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
+}

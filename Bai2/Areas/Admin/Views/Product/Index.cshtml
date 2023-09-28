@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Product>;
+
+<partial name="_Toast" />
+
+<section>
+    <div class="d-flex justify-content-sm-between">
+        <h4 class="font-weight-bold">Danh sách sản phẩm</h4>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i>
+            Tạo sản phẩm
+        </a>
+    </div>
+    <br />
+    <table class="table table-hover w-100" id="tbl-product">
+        <thead>
+            <tr>
+                <th scope="col">#Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Category</th>
+                <th scope="col">Image</th>
+                <th scope="col" class="text-center">Chỉnh sửa</th>
+                <th scope="col" class="text-center">Xóa</th>
+            </tr>
+        </thead>
+    </table>
+</section>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        function handleDelete({ url, redirectUrl }) {
+            Swal.fire({
+                title: 'Xóa ?',
+                text: "Bạn chắc chắn muốn xóa chứ!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url,
+                        success: function (res) {
+                            if (res.success) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                ).then(() => {
+                                    location.href = redirectUrl;
+                                })
+                            }
+                        }
+                    })
+
+                }
+            })
+        }
+        $(document).ready(function () {
+            $("#tbl-product").DataTable(
+                {
+                    ajax: "/Admin/Product/GetAllProducts",
+                    columns: [
+                        {
+                            data: "id",
+                        },
+                        {
+                            data: "name",
+                        },
+                        {
+                            data: "price",
+                        },
+                        {
+                            data: {
+                                _: "category.name"
+                            },
+                        },
+                        {
+                            data: "imageUrl",
+                            render: function (data, type) {
+                                if (type === "display") {
+                                    if (data !== null) {
+                                        return `<img width="80" src="${data}" />`
+                                    }
+                                }
+                                return data;
+                            }
+                        },
+                        {
+                            data: "id",
+                            render: function (data, type) {
+                                return `<a href="/Admin/Product/Edit?id=${data}" class="btn btn-primary mr-2">Chỉnh sửa</a>`
+                            }
+                        },
+                        {
+                            data: "id",
+                            render: function (data, type) {
+
+                                return `<button onclick="handleDelete({ url: '/Admin/Product/Delete?id=' + ${data}, redirectUrl: '/Admin/Product' })" class="btnDeleteProduct btn btn-danger">Xóa</button>`
+                            }
+                        },
+                    ],
+                });
+
+        })
+    </script>
+
+    <script>
+
+    </script>
+}

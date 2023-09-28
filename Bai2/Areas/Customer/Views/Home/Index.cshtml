@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-4 mb-3">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            <a asp-action="Detail" asp-route-productId="@item.Id">
+                                @item.Name
+                            </a>
+                        </div>
+                        <a asp-action="Detail" asp-route-productId="@item.Id">
+                            <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <p>
+                                Price:
+                                <span class="text-danger">@item.Price</span>
+                                USD
+                            </p>
+                            <a class="btn btn-primary" asp-action="Detail" asp-route-productId="@item.Id">
+                                Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class='page-item @(ViewBag.PAGE_INDEX == 1 ? "disabled" : "")'>
+                    <a class="page-link" asp-action="Index" asp-route-page="1" tabindex="-1">&larr;</a>
+                </li>
+                @for (int i = 1; i <= ViewBag.TOTAL_PAGE; i++)
+                {
+                    if (i == ViewBag.PAGE_INDEX)
+                    {
+                        <li class="page-item active"><a class="page-link" asp-action="Index" asp-route-page="@i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@i">@i</a></li>
+                    }
+                }
+
+                <li class='page-item @(ViewBag.PAGE_INDEX == ViewBag.TOTAL_PAGE ? "disabled" : "")'>
+                    <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.TOTAL_PAGE">&rarr;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}

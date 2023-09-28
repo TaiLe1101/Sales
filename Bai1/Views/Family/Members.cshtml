@@ -1,0 +1,24 @@
+﻿@model List<PersonInfo>;
+
+<h2 class="text-center">Thành viên gia đình 👨‍👩‍👦‍👦</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Họ tên</th>
+            <th scope="col">Tuổi</th>
+            <th scope="col">Sở thích</th>
+            <th scope="col">Mối quan hệ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.HoTen</td>
+                <td>@item.Tuoi</td>
+                <td>@item.SoThich</td>
+                <td>@item.MoiQuanHe</td>
+            </tr>
+        }
+    </tbody>
+</table>

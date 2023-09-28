@@ -1,0 +1,49 @@
+﻿@model List<Category>;
+
+
+<partial name="_Toast" />
+
+<section>
+    <div class="d-flex justify-content-sm-between">
+        <h4 class="font-weight-bold">Danh sách danh mục</h4>
+        <a asp-controller="Category" asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i>
+            Create Category
+        </a>
+    </div>
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Display order</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <th scope="row">@category.Id</th>
+                    <td>@category.Name</td>
+                    <td>@category.DisplayOrder</td>
+                    <td>
+                        <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" asp-area="Admin" class="btn btn-info">
+                            <i class="bi bi-pencil-square"></i>
+                            Chỉnh sửa
+                        </a>
+                        <a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" asp-area="Admin" class="btn btn-danger" onclick='handleDelete({url: ``, redirectUrl: `` })'>
+                            <i class="bi bi-x-circle"></i>
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</section>
+
+
+
+
